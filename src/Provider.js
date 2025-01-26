@@ -16,14 +16,14 @@ import { groupBy } from './helpers'
 
 const Provider = ({
   children,
-  offset,
-  position,
-  timeout,
-  type,
-  transition,
-  containerStyle,
-  template: AlertComponent,
-  context: Context,
+  offset = '10px', // Default value for offset
+  position = positions.TOP_CENTER, // Default value for position
+  timeout = 0, // Default value for timeout
+  type = types.INFO, // Default value for type
+  transition = transitions.FADE, // Default value for transition
+  containerStyle = { zIndex: 100 }, // Default value for containerStyle
+  template: AlertComponent, // Required prop (no default)
+  context: Context = DefaultContext, // Default value for context
   ...props
 }) => {
   const root = useRef(null)
@@ -192,18 +192,6 @@ Provider.propTypes = {
     Provider: PropTypes.object,
     Consumer: PropTypes.object
   })
-}
-
-Provider.defaultProps = {
-  offset: '10px',
-  position: positions.TOP_CENTER,
-  timeout: 0,
-  type: types.INFO,
-  transition: transitions.FADE,
-  containerStyle: {
-    zIndex: 100
-  },
-  context: DefaultContext
 }
 
 export default Provider
