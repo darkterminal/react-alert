@@ -1,0 +1,47 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*' # Trigger the workflow when a tag starting with 'v' is pushed (e.g., v7.0.3)
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Install Bun
+      - name: Install Bun
+        run: |
+          curl -fsSL https://bun.sh/install | bash
+          echo "$HOME/.bun/bin" >> $GITHUB_PATH
+
+      # Install dependencies using Bun
+      - name: Install dependencies
+        run: bun install
+
+      # Run tests using Bun
+      - name: Run tests
+        run: bun test
+
+      # Build the package using Bun
+      - name: Build package
+        run: bun run build
+
+      # Create a GitHub release
+      - name: Create GitHub release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            Release ${{ github.ref }} of react-alert.
+            Built and tested successfully.
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
