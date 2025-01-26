@@ -28,6 +28,14 @@ jobs:
       - name: Build package
         run: bun run build
 
+      # Publish to npm
+      - name: Publish to npm
+        run: |
+          npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
+          npm publish
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
       # Create a GitHub release
       - name: Create GitHub release
         uses: actions/create-release@v1
